@@ -1,4 +1,4 @@
-package memobeltran.wakeup;
+package aitfinalproject.wakeup;
 
 import org.junit.Test;
 
