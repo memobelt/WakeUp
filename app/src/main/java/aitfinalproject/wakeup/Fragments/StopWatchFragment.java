@@ -1,10 +1,15 @@
 package aitfinalproject.wakeup.Fragments;
 
-import android.view.View;
+import android.support.v4.app.Fragment;
 
-public class StopWatchFragment{
+/*
+* Glo
+* */
 
-    public StopWatchFragment(View view) {
+public class StopWatchFragment extends Fragment{
+    public static String TAG = "StopWatchFragment";
+
+    public StopWatchFragment() {
 
     }
 }
