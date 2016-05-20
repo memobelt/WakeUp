@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements AddAlarmDialog.No
 
         if (fragment == null) {
             if (tag.equals(AlarmClockFragment.TAG)) {
-                fragment = AlarmClockFragment.newInstance(R.layout.fragment_alarm_clock);
+                fragment = AlarmClockFragment.newInstance();
             } else if (tag.equals(StopWatchFragment.TAG)){
                 fragment = StopWatchFragment.newInstance();
             }
@@ -136,16 +136,16 @@ public class MainActivity extends AppCompatActivity implements AddAlarmDialog.No
             Bundle args = new Bundle();
             if (position == 0) {
                 showFragment(AlarmClockFragment.TAG);
-                return AlarmClockFragment.newInstance(R.layout.fragment_alarm_clock);
+                return AlarmClockFragment.newInstance();
             }
             if (position == 1) {
                 showFragment(StopWatchFragment.TAG);
                 return StopWatchFragment.newInstance();
             }
             if (position == 2) {
-                return AlarmClockFragment.newInstance(R.layout.fragment_alarm_clock);
+                return AlarmClockFragment.newInstance();
             }
-            return AlarmClockFragment.newInstance(R.layout.fragment_alarm_clock);
+            return AlarmClockFragment.newInstance();
         }
 
         @Override

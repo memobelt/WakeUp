@@ -30,11 +30,8 @@ public class AlarmClockFragment extends Fragment {
     AlarmAdapter mAlarmAdapter;
     public AlarmClockFragment() {
     }
-    public static AlarmClockFragment newInstance(int layout) {
+    public static AlarmClockFragment newInstance() {
         AlarmClockFragment fragment = new AlarmClockFragment();
-        Bundle args = new Bundle();
-        args.putInt(Constants.LAYOUT,layout);
-        fragment.setArguments(args);
         return fragment;
     }
 
@@ -51,7 +48,7 @@ public class AlarmClockFragment extends Fragment {
         LinearLayoutManager llm = new LinearLayoutManager(mContext);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
 
-        View view = inflater.inflate(getArguments().getInt(Constants.LAYOUT), container, false);
+        View view = inflater.inflate(R.layout.fragment_alarm_clock, container, false);
 
         mAlarmAdapter = new AlarmAdapter(mContext);
         RecyclerView recycler_View = (RecyclerView) view.findViewById(R.id.recycler_view1);
