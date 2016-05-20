@@ -7,6 +7,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -17,9 +18,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import aitfinalproject.wakeup.Fragments.ManageFragments;
+import aitfinalproject.wakeup.AlarmClock.AddAlarmDialog;
+import aitfinalproject.wakeup.Fragments.AlarmClockFragment;
 
-public class MainActivity extends AppCompatActivity implements ManageFragments.OnFragmentInteractionListener{
+public class MainActivity extends AppCompatActivity implements AddAlarmDialog.NoticeDialogListener,
+        AlarmClockFragment.OnAlarmFragmentInteractionListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -50,9 +53,6 @@ public class MainActivity extends AppCompatActivity implements ManageFragments.O
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-
-
-
     }
 
 
@@ -79,10 +79,43 @@ public class MainActivity extends AppCompatActivity implements ManageFragments.O
     }
 
     @Override
-    public void onFragmentInteraction(Uri uri) {
+    public void onAddAlarmPositiveClick(DialogFragment dialog) {
+        AlarmClockFragment acf = (AlarmClockFragment)
+                getSupportFragmentManager().findFragmentById(R.id.container);
+        acf.addAlarm();
 
     }
 
+    @Override
+    public void onAlarmFragmentInteraction(Uri uri) {
+
+    }
+
+    public void showFragment(String tag){
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        Fragment fragment = fragmentManager.findFragmentByTag(tag);
+
+        if (fragment == null) {
+            if (tag.equals(AlarmClockFragment.TAG)) {
+                fragment = AlarmClockFragment.newInstance(R.layout.fragment_alarm_clock);
+//            } else if (tag.equals(FragmentDetails.TAG)){
+//                fragment = new FragmentDetails();
+            }
+        }
+
+        FragmentTransaction trans = fragmentManager.beginTransaction();
+
+        trans.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+
+        trans.replace(R.id.container, fragment, tag);
+
+        trans.addToBackStack(null);
+
+        trans.commit();
+
+    }
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
@@ -99,18 +132,17 @@ public class MainActivity extends AppCompatActivity implements ManageFragments.O
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
             Bundle args = new Bundle();
-            ManageFragments mf = new ManageFragments();
             if (position == 0) {
-                args.putInt(Constants.LAYOUT,R.layout.fragment_alarm_clock);
+                showFragment(AlarmClockFragment.TAG);
+                return AlarmClockFragment.newInstance(R.layout.fragment_alarm_clock);
             }
             if (position == 1) {
-                args.putInt(Constants.LAYOUT,R.layout.fragment_stop_watch);
+                return AlarmClockFragment.newInstance(R.layout.fragment_alarm_clock);
             }
             if (position == 2) {
-                args.putInt(Constants.LAYOUT,R.layout.fragment_timer);
+                return AlarmClockFragment.newInstance(R.layout.fragment_alarm_clock);
             }
-            mf.setArguments(args);
-            return mf;
+            return AlarmClockFragment.newInstance(R.layout.fragment_alarm_clock);
         }
 
         @Override
@@ -130,41 +162,6 @@ public class MainActivity extends AppCompatActivity implements ManageFragments.O
                     return "SECTION 3";
             }
             return null;
-        }
-    }
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
-
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
-            return rootView;
         }
     }
 }

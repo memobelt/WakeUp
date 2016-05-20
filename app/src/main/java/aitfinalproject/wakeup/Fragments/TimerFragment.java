@@ -1,10 +1,12 @@
 package aitfinalproject.wakeup.Fragments;
 
-import android.view.View;
+import android.support.v4.app.Fragment;
+/*
+* Memo
+* */
+public class TimerFragment extends Fragment{
+    public static String TAG = "TimerFragment";
 
-public class TimerFragment {
-
-    public TimerFragment(View view){
-
+    public TimerFragment(){
     }
 }
