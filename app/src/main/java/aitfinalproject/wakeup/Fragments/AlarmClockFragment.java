@@ -30,8 +30,11 @@ public class AlarmClockFragment extends Fragment {
     AlarmAdapter mAlarmAdapter;
     public AlarmClockFragment() {
     }
-    public static AlarmClockFragment newInstance() {
+    public static AlarmClockFragment newInstance(int layout) {
+        Bundle args = new Bundle();
+        args.putInt("F",layout);
         AlarmClockFragment fragment = new AlarmClockFragment();
+        fragment.setArguments(args);
         return fragment;
     }
 
@@ -41,6 +44,8 @@ public class AlarmClockFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = getContext();
+        getFragmentManager().beginTransaction().
+                replace(getArguments().getInt("F"), this, AlarmClockFragment.TAG);
     }
 
     @Override

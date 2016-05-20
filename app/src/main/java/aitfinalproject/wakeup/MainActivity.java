@@ -8,6 +8,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -102,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements AddAlarmDialog.No
 
         if (fragment == null) {
             if (tag.equals(AlarmClockFragment.TAG)) {
-                fragment = AlarmClockFragment.newInstance();
+//                fragment = AlarmClockFragment.newInstance();
             } else if (tag.equals(StopWatchFragment.TAG)){
                 fragment = StopWatchFragment.newInstance();
             }
@@ -123,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements AddAlarmDialog.No
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+    public class SectionsPagerAdapter extends FragmentStatePagerAdapter{
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -135,17 +136,18 @@ public class MainActivity extends AppCompatActivity implements AddAlarmDialog.No
             // Return a PlaceholderFragment (defined as a static inner class below).
             Bundle args = new Bundle();
             if (position == 0) {
-                showFragment(AlarmClockFragment.TAG);
-                return AlarmClockFragment.newInstance();
+//                showFragment(AlarmClockFragment.TAG);
+                return AlarmClockFragment.newInstance(R.id.container);
             }
             if (position == 1) {
-                showFragment(StopWatchFragment.TAG);
+//                showFragment(StopWatchFragment.TAG);
                 return StopWatchFragment.newInstance();
             }
             if (position == 2) {
-                return AlarmClockFragment.newInstance();
+                return new Fragment();
+//                return AlarmClockFragment.newInstance();
             }
-            return AlarmClockFragment.newInstance();
+            return new Fragment();
         }
 
         @Override
