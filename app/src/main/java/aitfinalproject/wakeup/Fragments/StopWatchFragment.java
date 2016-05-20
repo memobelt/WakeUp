@@ -22,12 +22,11 @@ public class StopWatchFragment extends Fragment {
     private TextView tvRunTime;
     private Timer timerStopWatch;
     private long startTime = 0;
-    private boolean isRunning = false;
-    private boolean isLap = false;
     ToggleButton btnStart;
     Button btnReset;
-    private boolean isPaused = false;
     private RunTimeTimerTask timerTask;
+    private int checkClicked = 0;
+    private LinearLayout layoutContainer;
 
     public StopWatchFragment() {
 
@@ -45,7 +44,7 @@ public class StopWatchFragment extends Fragment {
         tvRunTime = (TextView) view.findViewById(R.id.tvStopWatch);
 
 
-        final LinearLayout layoutContainer = (LinearLayout) view.findViewById(
+        layoutContainer = (LinearLayout) view.findViewById(
                 R.id.layoutContainer);
 
         btnReset = (Button) view.findViewById(R.id.btnReset);
@@ -53,86 +52,73 @@ public class StopWatchFragment extends Fragment {
         btnReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                tvRunTime.setText("00:00:00");
+                checkClicked = 0;
+                btnReset.setEnabled(false);
+                btnStart.setChecked(false);
             }
         });
 
         btnStart =
                 (ToggleButton) view.findViewById(R.id.btnStart);
+
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                btnReset.setEnabled(true);
-                if(btnStart.isChecked()){
-                    timerTask = new RunTimeTimerTask();
-                    startTime = System.currentTimeMillis();
-                    if(timerStopWatch != null){
-                        timerStopWatch.cancel();
+                    if(btnStart.isChecked() && checkClicked == 0) {
+                        startTime = System.currentTimeMillis();
+                        startTime();
+                        checkClicked++;
+                    }else if(!btnStart.isChecked()){
+                        btnReset.setEnabled(true);
+                        pauseTime();
+                    }else if(btnStart.isChecked()){
+                       startTime();
                     }
-                    layoutContainer.removeAllViews();
-                    timerStopWatch = new Timer();
-                    timerStopWatch.schedule(timerTask,0,10);
-                }else if (!btnStart.isChecked()) {
-                    btnReset.setEnabled(false);
-                    startTime = System.currentTimeMillis();
-
-                    if(timerStopWatch != null){
-                        timerStopWatch.cancel();
-                    }
-                    layoutContainer.removeAllViews();
-                    timerStopWatch = new Timer();
-                    timerTask.run();
-                    timerStopWatch.schedule(timerTask,0,10);
                 }
-            }
         });
         return view;
     }
-//    private class RunTimeTimerTask extends TimerTask {
-//        @Override
-//        public void run() {
-//            getActivity().runOnUiThread(new Runnable() {
-//                @Override
-//                public void run() {
-//
-//                    long currentTime = System.currentTimeMillis();
-//                    long diff = currentTime - startTime;
-//                    long min = diff / 60000;
-//                    long sec = diff / 1000;
-//                    long msec = (diff % 1000) / 10;
-//
-//
-//                    //fix the time so that when it hits 60 the sec resets to 00
-//                    String time = String.format("%1$02d:%2$02d:%3$02d",
-//                            min, sec, msec);
-//                    tvRunTime.setText(time);
-//                }
-//            });
-//        }
-//    }
+
+    public void startTime(){
+        if (timerStopWatch != null) {
+            timerStopWatch.cancel();
+        }
+        layoutContainer.removeAllViews();
+        timerStopWatch = new Timer();
+        timerTask = new RunTimeTimerTask();
+        timerStopWatch.schedule(timerTask, 0, 10);
+    }
+
+    public void pauseTime(){
+        timerStopWatch.cancel();
+        timerTask.cancel();
+    }
 
     private class RunTimeTimerTask extends TimerTask {
+        private long currentTime;
+        private long diff ;
+        private long min;
+        private long sec;
+        private long msec;
+
         @Override
         public void run() {
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-
-                    if(isPaused) {
-                        long currentTime = System.currentTimeMillis();
-                        long diff = currentTime - startTime;
-                        long min = diff / 60000;
-                        long sec = diff / 1000;
-                        long msec = (diff % 1000) / 10;
-
+                        currentTime = System.currentTimeMillis();
+                        diff = currentTime - startTime;
+                         min = diff / 60000;
+                    //TODO: fix so that it doesn't go over 60 seconds
+                         sec = diff / 1000;
+                         msec = (diff % 1000) / 10;
 
                         //fix the time so that when it hits 60 the sec resets to 00
                         String time = String.format("%1$02d:%2$02d:%3$02d",
                                 min, sec, msec);
                         tvRunTime.setText(time);
-                    }else if(!isPaused){
 
-                    }
                 }
             });
         }
