@@ -21,6 +21,8 @@ import android.widget.TextView;
 
 import aitfinalproject.wakeup.AlarmClock.AddAlarmDialog;
 import aitfinalproject.wakeup.Fragments.AlarmClockFragment;
+import aitfinalproject.wakeup.Fragments.StopWatchFragment;
+import aitfinalproject.wakeup.Fragments.TimerFragment;
 
 public class MainActivity extends AppCompatActivity implements AddAlarmDialog.NoticeDialogListener,
         AlarmClockFragment.OnAlarmFragmentInteractionListener {
@@ -82,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements AddAlarmDialog.No
     @Override
     public void onAddAlarmPositiveClick(DialogFragment dialog) {
         AlarmClockFragment acf = (AlarmClockFragment)
-                getSupportFragmentManager().findFragmentById(R.id.container);
+                getSupportFragmentManager().findFragmentByTag(AlarmClockFragment.TAG);
         acf.addAlarm();
 
     }
@@ -101,8 +103,8 @@ public class MainActivity extends AppCompatActivity implements AddAlarmDialog.No
         if (fragment == null) {
             if (tag.equals(AlarmClockFragment.TAG)) {
                 fragment = AlarmClockFragment.newInstance(R.layout.fragment_alarm_clock);
-//            } else if (tag.equals(FragmentDetails.TAG)){
-//                fragment = new FragmentDetails();
+            } else if (tag.equals(StopWatchFragment.TAG)){
+                fragment = StopWatchFragment.newInstance();
             }
         }
 
@@ -115,7 +117,6 @@ public class MainActivity extends AppCompatActivity implements AddAlarmDialog.No
         trans.addToBackStack(null);
 
         trans.commit();
-
     }
 
     /**
@@ -138,7 +139,8 @@ public class MainActivity extends AppCompatActivity implements AddAlarmDialog.No
                 return AlarmClockFragment.newInstance(R.layout.fragment_alarm_clock);
             }
             if (position == 1) {
-                return AlarmClockFragment.newInstance(R.layout.fragment_alarm_clock);
+                showFragment(StopWatchFragment.TAG);
+                return StopWatchFragment.newInstance();
             }
             if (position == 2) {
                 return AlarmClockFragment.newInstance(R.layout.fragment_alarm_clock);

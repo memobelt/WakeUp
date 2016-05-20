@@ -29,6 +29,11 @@ public class StopWatchFragment extends Fragment {
 
     }
 
+    public static StopWatchFragment newInstance() {
+        StopWatchFragment fragment = new StopWatchFragment();
+        return fragment;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
