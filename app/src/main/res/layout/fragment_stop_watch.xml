@@ -43,6 +43,12 @@
 
     </LinearLayout>
 
+    <Button
+        android:id="@+id/btnLap"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Lap"/>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -55,7 +61,6 @@
 
         </LinearLayout>
     </ScrollView>
-
 
 
 </LinearLayout>

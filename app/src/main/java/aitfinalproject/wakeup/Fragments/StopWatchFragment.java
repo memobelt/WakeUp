@@ -1,5 +1,6 @@
 package aitfinalproject.wakeup.Fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -22,10 +23,12 @@ public class StopWatchFragment extends Fragment {
     private TextView tvRunTime;
     private Timer timerStopWatch;
     private long startTime = 0;
-    ToggleButton btnStart;
-    Button btnReset;
+    private ToggleButton btnStart;
+    private Button btnReset;
+    private Button btnLap;
     private RunTimeTimerTask timerTask;
     private int checkClicked = 0;
+    private int counter = 0;
     private LinearLayout layoutContainer;
 
     public StopWatchFragment() {
@@ -39,13 +42,36 @@ public class StopWatchFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_stop_watch, container, false);
+    public View onCreateView(final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable final Bundle savedInstanceState) {
+        final View view = inflater.inflate(R.layout.fragment_stop_watch, container, false);
         tvRunTime = (TextView) view.findViewById(R.id.tvStopWatch);
 
 
         layoutContainer = (LinearLayout) view.findViewById(
                 R.id.layoutContainer);
+
+      LayoutInflater inflateMe = (LayoutInflater) getLayoutInflater(savedInstanceState);
+
+        btnLap = (Button) view.findViewById(R.id.btnLap);
+        btnLap.setEnabled(false);
+        btnLap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                    long diff = System.currentTimeMillis() - startTime;
+                    long diffInSec = diff / 1000;
+                    long diffMsMod = diff % 1000;
+
+                    LayoutInflater inflaterMe = LayoutInflater.from(getActivity());
+                    counter++;
+                    View viewer = inflaterMe.inflate(R.layout.stop_watch_lap_time, layoutContainer, false);
+                    TextView tvLapTime = (TextView) viewer.findViewById(R.id.tvLapTime);
+                    tvLapTime.setText("Lap " + counter + " : " + String.format("%1$02d:%2$02d", diffInSec, diffMsMod));
+
+                    layoutContainer.addView(viewer);
+
+            }
+        });
 
         btnReset = (Button) view.findViewById(R.id.btnReset);
         btnReset.setEnabled(false);
@@ -56,24 +82,28 @@ public class StopWatchFragment extends Fragment {
                 checkClicked = 0;
                 btnReset.setEnabled(false);
                 btnStart.setChecked(false);
+                btnLap.setEnabled(false);
+                layoutContainer.removeAllViews();
             }
         });
 
         btnStart =
                 (ToggleButton) view.findViewById(R.id.btnStart);
-
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                     if(btnStart.isChecked() && checkClicked == 0) {
                         startTime = System.currentTimeMillis();
                         startTime();
+                        btnLap.setEnabled(true);
                         checkClicked++;
                     }else if(!btnStart.isChecked()){
                         btnReset.setEnabled(true);
+                        btnLap.setEnabled(false);
                         pauseTime();
                     }else if(btnStart.isChecked()){
                        startTime();
+                        btnLap.setEnabled(true);
                     }
                 }
         });
@@ -84,7 +114,6 @@ public class StopWatchFragment extends Fragment {
         if (timerStopWatch != null) {
             timerStopWatch.cancel();
         }
-        layoutContainer.removeAllViews();
         timerStopWatch = new Timer();
         timerTask = new RunTimeTimerTask();
         timerStopWatch.schedule(timerTask, 0, 10);
@@ -118,13 +147,9 @@ public class StopWatchFragment extends Fragment {
                         String time = String.format("%1$02d:%2$02d:%3$02d",
                                 min, sec, msec);
                         tvRunTime.setText(time);
-
                 }
             });
         }
     }
-
-
-
 
 }
