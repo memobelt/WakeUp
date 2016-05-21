@@ -80,6 +80,7 @@ public class StopWatchFragment extends Fragment {
             public void onClick(View v) {
                 tvRunTime.setText("00:00:00");
                 checkClicked = 0;
+                counter = 0;
                 btnReset.setEnabled(false);
                 btnStart.setChecked(false);
                 btnLap.setEnabled(false);
@@ -104,6 +105,7 @@ public class StopWatchFragment extends Fragment {
                     }else if(btnStart.isChecked()){
                        startTime();
                         btnLap.setEnabled(true);
+                        btnReset.setEnabled(false);
                     }
                 }
         });
