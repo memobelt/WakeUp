@@ -18,6 +18,8 @@ import android.view.View;
 import android.widget.TimePicker;
 import android.widget.ToggleButton;
 
+import com.astuetz.PagerSlidingTabStrip;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -61,6 +63,9 @@ public class MainActivity extends AppCompatActivity implements AddAlarmDialog.No
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+        PagerSlidingTabStrip tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+        tabs.setViewPager(mViewPager);
+
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -76,6 +81,8 @@ public class MainActivity extends AppCompatActivity implements AddAlarmDialog.No
                     fabAddAlarm.hide();
                 }
             }
+
+
 
             @Override
             public void onPageScrollStateChanged(int state) {
@@ -207,11 +214,11 @@ public class MainActivity extends AppCompatActivity implements AddAlarmDialog.No
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "SECTION 1";
+                    return "ALARM";
                 case 1:
-                    return "SECTION 2";
+                    return "STOPWATCH";
                 case 2:
-                    return "SECTION 3";
+                    return "TIMER";
             }
             return null;
         }

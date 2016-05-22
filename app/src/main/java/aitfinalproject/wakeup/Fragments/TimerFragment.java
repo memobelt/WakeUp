@@ -143,7 +143,7 @@ public class TimerFragment extends Fragment{
 
         return view;
     }
-    
+
 
     public class CountDownTimer extends android.os.CountDownTimer {
         public long millis;

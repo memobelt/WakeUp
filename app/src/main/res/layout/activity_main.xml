@@ -21,9 +21,20 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:layout_scrollFlags="scroll|enterAlways">
+            app:layout_scrollFlags="scroll|enterAlways"/>
 
-        </android.support.v7.widget.Toolbar>
+        <com.astuetz.PagerSlidingTabStrip
+            android:id="@+id/tabs"
+            app:pstsShouldExpand="true"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:textSize="14sp"
+            android:textColor="#ffffff"
+            app:pstsDividerColor="#ffffff"
+            app:pstsIndicatorColor="#a8e269"
+            app:pstsUnderlineColor="#8cda68"
+            app:pstsTabPaddingLeftRight="14dp">
+        </com.astuetz.PagerSlidingTabStrip>
 
     </android.support.design.widget.AppBarLayout>
 
