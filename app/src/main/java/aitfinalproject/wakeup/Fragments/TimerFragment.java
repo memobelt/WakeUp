@@ -1,5 +1,11 @@
 package aitfinalproject.wakeup.Fragments;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.content.Context;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
@@ -124,6 +130,10 @@ public class TimerFragment extends Fragment{
 
                 linearTimer.setVisibility(View.GONE);
                 linearSpinner.setVisibility(View.VISIBLE);
+
+                if(timer.isAlarmPlaying()){
+                    timer.stopAlarm();
+                }
             }
         });
 
@@ -153,6 +163,7 @@ public class TimerFragment extends Fragment{
 
     public class CountDownTimer extends android.os.CountDownTimer {
         public long millis;
+        public Ringtone r;
 
         //constructor for CountDownTimer
         public CountDownTimer (long millisInFuture, long countDownInterval){
@@ -163,6 +174,14 @@ public class TimerFragment extends Fragment{
 
         public long getTime(){
             return millis;
+        }
+
+        public boolean isAlarmPlaying(){
+            return r.isPlaying();
+        }
+
+        public void stopAlarm(){
+            r.stop();
         }
 
 
@@ -179,6 +198,29 @@ public class TimerFragment extends Fragment{
 
         @Override
         public void onFinish() {
+            tvTimer.setText("00:00:00");
+            try {
+                Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+                r = RingtoneManager.getRingtone(getContext(), notification);
+                r.play();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            Notification noti = new Notification.Builder(getContext())
+                    .setContentTitle("Wake Up")
+                    .setContentText("Timer is Up!")
+                    .setSmallIcon(R.drawable.ic_timer)
+                    .build();
+
+            NotificationManager notiManager = (NotificationManager) getActivity().getSystemService(Context.
+            NOTIFICATION_SERVICE);
+
+            notiManager.notify(101, noti);
+
+
+
+
             Toast.makeText(getContext(), "Timer Done.",Toast.LENGTH_LONG).show();
         }
     }
