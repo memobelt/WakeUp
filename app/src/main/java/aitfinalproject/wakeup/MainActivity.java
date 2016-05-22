@@ -98,6 +98,8 @@ public class MainActivity extends AppCompatActivity implements AddAlarmDialog.No
         super.onStop();
     }
 
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

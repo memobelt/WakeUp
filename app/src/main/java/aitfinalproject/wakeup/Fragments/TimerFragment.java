@@ -1,14 +1,12 @@
 package aitfinalproject.wakeup.Fragments;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.content.Context;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,9 +22,7 @@ import java.util.concurrent.TimeUnit;
 
 import aitfinalproject.wakeup.R;
 
-/*
-* Memo
-* */
+
 public class TimerFragment extends Fragment{
     public static String TAG = "TimerFragment";
     private LinearLayout linearSpinner;
@@ -42,9 +38,6 @@ public class TimerFragment extends Fragment{
     private long hourMs;
     private long minuteMs;
     private CountDownTimer timer;
-    private int clickCounter = 0;
-
-
 
     public TimerFragment(){
     }
@@ -103,13 +96,14 @@ public class TimerFragment extends Fragment{
 
 
         btnTimeReset = (Button) view.findViewById(R.id.btnTimeReset);
-        //btnTimeReset.setEnabled(false);
         btnTimeReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 //stops timer
                 timer.cancel();
                 timer.onFinish();
+
                 //resets spinners
                 spinnerHour.setSelection(0);
                 spinnerMin.setSelection(0);
@@ -126,6 +120,7 @@ public class TimerFragment extends Fragment{
                 if(timer.isAlarmPlaying()){
                     timer.stopAlarm();
                 }
+
             }
         });
 
@@ -146,12 +141,9 @@ public class TimerFragment extends Fragment{
             }
         });
 
-
-
         return view;
     }
-
-
+    
 
     public class CountDownTimer extends android.os.CountDownTimer {
         public long millis;
@@ -193,7 +185,8 @@ public class TimerFragment extends Fragment{
 
         @Override
         public void onFinish() {
-            if (tvTimer.getText().toString().equals("00:00:00")) {
+
+            if (tvTimer.getText().toString().equals("00:00:01")) {
                 try {
                     Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
                     r = RingtoneManager.getRingtone(getContext(), notification);
@@ -202,22 +195,12 @@ public class TimerFragment extends Fragment{
                     e.printStackTrace();
                 }
 
-                Notification noti = new Notification.Builder(getContext())
-                        .setContentTitle("Wake Up")
-                        .setContentText("Timer is Up!")
-                        .setSmallIcon(R.drawable.ic_timer)
-                        .build();
-
-                NotificationManager notiManager = (NotificationManager) getActivity().getSystemService(Context.
-                        NOTIFICATION_SERVICE);
-
-                notiManager.notify(101, noti);
-
-
                 Toast.makeText(getContext(), "Timer Done.", Toast.LENGTH_LONG).show();
             }
             tvTimer.setText("00:00:00");
         }
+
     }
+
 
 }
