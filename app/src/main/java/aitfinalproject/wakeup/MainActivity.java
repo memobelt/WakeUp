@@ -144,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements AddAlarmDialog.No
                 return StopWatchFragment.newInstance();
             }
             if (position == 2) {
-                return new Fragment();
+                return new TimerFragment().newInstance();
 //                return AlarmClockFragment.newInstance();
             }
             return new Fragment();
