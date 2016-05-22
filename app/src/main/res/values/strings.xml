@@ -100,5 +100,13 @@
         <item>59</item>
     </string-array>
 
+    <string name="txt_run_time">%1$02d : %2$02d</string>
+    <string name="monday">M</string>
+    <string name="tuesday">T</string>
+    <string name="wednesday">W</string>
+    <string name="thursday">Th</string>
+    <string name="friday">F</string>
+    <string name="saturday">Sa</string>
+    <string name="sunday">Su</string>
 
 </resources>

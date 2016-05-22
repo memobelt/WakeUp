@@ -27,6 +27,15 @@
 
     </android.support.design.widget.AppBarLayout>
 
+    <android.support.design.widget.FloatingActionButton
+    android:id="@+id/fabAddAlarm"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="end|bottom"
+    android:src="@android:drawable/ic_menu_add"
+    android:layout_margin="@dimen/fab_margin"
+    android:visibility="visible" />
+
     <android.support.v4.view.ViewPager
         android:id="@+id/container"
         android:layout_width="match_parent"

@@ -7,10 +7,8 @@ import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +19,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
-
-import org.w3c.dom.Text;
 
 import java.util.concurrent.TimeUnit;
 
@@ -51,8 +47,6 @@ public class TimerFragment extends Fragment{
 
 
     public TimerFragment(){
-
-
     }
 
     public static TimerFragment newInstance() {
@@ -115,7 +109,7 @@ public class TimerFragment extends Fragment{
             public void onClick(View v) {
                 //stops timer
                 timer.cancel();
-
+                timer.onFinish();
                 //resets spinners
                 spinnerHour.setSelection(0);
                 spinnerMin.setSelection(0);
@@ -124,8 +118,6 @@ public class TimerFragment extends Fragment{
                 btnPause.setEnabled(false);
                 btnPause.setChecked(false);
                 btnTimeStart.setEnabled(true);
-
-                tvTimer.setText("00:00:00");
 
 
                 linearTimer.setVisibility(View.GONE);
@@ -177,6 +169,9 @@ public class TimerFragment extends Fragment{
         }
 
         public boolean isAlarmPlaying(){
+            if (r == null){
+                return false;
+            }
             return r.isPlaying();
         }
 
@@ -198,30 +193,30 @@ public class TimerFragment extends Fragment{
 
         @Override
         public void onFinish() {
-            tvTimer.setText("00:00:00");
-            try {
-                Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-                r = RingtoneManager.getRingtone(getContext(), notification);
-                r.play();
-            } catch (Exception e) {
-                e.printStackTrace();
+            if (tvTimer.getText().toString().equals("00:00:00")) {
+                try {
+                    Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+                    r = RingtoneManager.getRingtone(getContext(), notification);
+                    r.play();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                Notification noti = new Notification.Builder(getContext())
+                        .setContentTitle("Wake Up")
+                        .setContentText("Timer is Up!")
+                        .setSmallIcon(R.drawable.ic_timer)
+                        .build();
+
+                NotificationManager notiManager = (NotificationManager) getActivity().getSystemService(Context.
+                        NOTIFICATION_SERVICE);
+
+                notiManager.notify(101, noti);
+
+
+                Toast.makeText(getContext(), "Timer Done.", Toast.LENGTH_LONG).show();
             }
-
-            Notification noti = new Notification.Builder(getContext())
-                    .setContentTitle("Wake Up")
-                    .setContentText("Timer is Up!")
-                    .setSmallIcon(R.drawable.ic_timer)
-                    .build();
-
-            NotificationManager notiManager = (NotificationManager) getActivity().getSystemService(Context.
-            NOTIFICATION_SERVICE);
-
-            notiManager.notify(101, noti);
-
-
-
-
-            Toast.makeText(getContext(), "Timer Done.",Toast.LENGTH_LONG).show();
+            tvTimer.setText("00:00:00");
         }
     }
 

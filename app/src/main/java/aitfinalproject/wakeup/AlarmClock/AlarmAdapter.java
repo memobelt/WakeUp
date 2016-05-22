@@ -6,12 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Switch;
-import android.widget.TextClock;
+import android.widget.TextView;
+import android.widget.ToggleButton;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import aitfinalproject.wakeup.Constants;
 import aitfinalproject.wakeup.R;
 
 /**
@@ -20,13 +21,13 @@ import aitfinalproject.wakeup.R;
     public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolder> {
 
     private Context mContext;
-    private List<Alarm> mAlarms = new ArrayList<>();
+    private AlarmList mAlarms = new AlarmList();
     public AlarmAdapter(Context context){
         mContext = context;
     }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View rowView = LayoutInflater.from(parent.getContext())
+        View rowView = LayoutInflater.from(mContext)
                 .inflate(R.layout.alarm_row, parent, false);
         return new ViewHolder(rowView);
     }
@@ -35,6 +36,7 @@ import aitfinalproject.wakeup.R;
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final Alarm alarm = mAlarms.get(position);
         final Switch sAlarm = holder.sAlarm;
+        sAlarm.setChecked(alarm.isEnabled());
         sAlarm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -42,17 +44,46 @@ import aitfinalproject.wakeup.R;
             }
         });
 
+        final TextView tvAlarm = holder.tvAlarmTime;
+        tvAlarm.setText(alarm.getTime());
+
+        int[] days = alarm.getDays();
+        if(days!=null) {
+            for (int i = 0; i < 7; i++) {
+                if (days[i] == Constants.ON) {
+                    holder.toggleButtons[i].setChecked(true);
+                } else {
+                    holder.toggleButtons[i].setChecked(false);
+                }
+            }
+        }
         holder.itemView.setTag(alarm);
 
     }
-    public void addAlarm(){
-        mAlarms.add(mAlarms.size(),new Alarm(true, new TextClock(mContext)));
+    public void addAlarm(Alarm alarm){
+        if(alarm == null){
+            alarm = new Alarm(true, "f", Alarm.convertArrayToString(new int[]{1}));
+        }
+        long i = alarm.save();
+        mAlarms.add(mAlarms.size(),alarm);
+        notifyDataSetChanged();
+    }
+
+    public void loadAlarms(){
+        List<Alarm> alarms = Alarm.listAll(Alarm.class);
+        for (Alarm alarm : alarms) {
+            mAlarms.add(mAlarms.size(), alarm);
+        }
         notifyDataSetChanged();
     }
 
     public void onItemDismiss(int position) {
-        mAlarms.remove(position);
+        mAlarms.remove(position).delete();
         notifyItemRemoved(position);
+    }
+
+    public AlarmList getAlarms(){
+        return mAlarms;
     }
 
     public void onItemMove(int fromPosition, int toPosition) {
@@ -75,13 +106,21 @@ import aitfinalproject.wakeup.R;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextClock tcAlarmTime;
+        private TextView tvAlarmTime;
         private Switch sAlarm;
+        private ToggleButton[] toggleButtons = new ToggleButton[7];
 
         public ViewHolder(View itemView) {
             super(itemView);
-            tcAlarmTime = (TextClock) itemView.findViewById(R.id.tcAlarmTime);
+            tvAlarmTime = (TextView) itemView.findViewById(R.id.tvAlarmTime);
             sAlarm = (Switch) itemView.findViewById(R.id.sAlarm);
+            toggleButtons[Constants.MONDAY] = (ToggleButton) itemView.findViewById(R.id.rowMonday);
+            toggleButtons[Constants.TUESDAY] = (ToggleButton) itemView.findViewById(R.id.rowTuesday);
+            toggleButtons[Constants.WEDNESDAY] = (ToggleButton) itemView.findViewById(R.id.rowWednesday);
+            toggleButtons[Constants.THURSDAY] = (ToggleButton) itemView.findViewById(R.id.rowThursday);
+            toggleButtons[Constants.FRIDAY] = (ToggleButton) itemView.findViewById(R.id.rowFriday);
+            toggleButtons[Constants.SATURDAY] = (ToggleButton) itemView.findViewById(R.id.rowSaturday);
+            toggleButtons[Constants.SUNDAY] = (ToggleButton) itemView.findViewById(R.id.rowSunday);
         }
     }
 }

@@ -3,24 +3,27 @@ package aitfinalproject.wakeup;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
+import android.text.format.DateFormat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.TimePicker;
+import android.widget.ToggleButton;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import aitfinalproject.wakeup.AlarmClock.AddAlarmDialog;
+import aitfinalproject.wakeup.AlarmClock.Alarm;
 import aitfinalproject.wakeup.Fragments.AlarmClockFragment;
 import aitfinalproject.wakeup.Fragments.StopWatchFragment;
 import aitfinalproject.wakeup.Fragments.TimerFragment;
@@ -42,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements AddAlarmDialog.No
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+    private FloatingActionButton fabAddAlarm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +61,42 @@ public class MainActivity extends AppCompatActivity implements AddAlarmDialog.No
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if(position==0){
+                    fabAddAlarm.show();
+                }
+                else {
+                    fabAddAlarm.hide();
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+        fabAddAlarm = (FloatingActionButton) findViewById(R.id.fabAddAlarm);
+        fabAddAlarm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment addAlarmDialog = new AddAlarmDialog();
+                addAlarmDialog.show(getSupportFragmentManager(), "addAlarm");
+            }
+        });
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -83,41 +121,48 @@ public class MainActivity extends AppCompatActivity implements AddAlarmDialog.No
     }
 
     @Override
-    public void onAddAlarmPositiveClick(DialogFragment dialog) {
+    public void onAddAlarmPositiveClick(View v) {
         AlarmClockFragment acf = (AlarmClockFragment)
                 getSupportFragmentManager().findFragmentByTag(AlarmClockFragment.TAG);
-        acf.addAlarm();
+        ToggleButton[] toggleButtons = new ToggleButton[7];
+        toggleButtons[Constants.MONDAY] = (ToggleButton) v.findViewById(R.id.monday);
+        toggleButtons[Constants.TUESDAY] = (ToggleButton) v.findViewById(R.id.tuesday);
+        toggleButtons[Constants.WEDNESDAY] = (ToggleButton) v.findViewById(R.id.wednesday);
+        toggleButtons[Constants.THURSDAY] = (ToggleButton) v.findViewById(R.id.thursday);
+        toggleButtons[Constants.FRIDAY] = (ToggleButton) v.findViewById(R.id.friday);
+        toggleButtons[Constants.SATURDAY] = (ToggleButton) v.findViewById(R.id.saturday);
+        toggleButtons[Constants.SUNDAY] = (ToggleButton) v.findViewById(R.id.sunday);
 
+        int dates[] = new int[7];
+        for (int i = 0; i < 7; i++) {
+            if(toggleButtons[i].isChecked()){
+                dates[i] = Constants.ON;
+            }
+            else {
+                dates[i] = Constants.OFF;
+            }
+        }
+
+        TimePicker tpAlarm = (TimePicker) v.findViewById(R.id.tpAlarm);
+        String time = String.valueOf(tpAlarm.getCurrentHour())+":"+String.valueOf(tpAlarm.getCurrentMinute());
+        if(!DateFormat.is24HourFormat(this)){
+            SimpleDateFormat _24HourSDF = new SimpleDateFormat("HH:mm");
+            SimpleDateFormat _12HourSDF = new SimpleDateFormat("hh:mm a");
+            Date _24HourDt = null;
+            try {
+                _24HourDt = _24HourSDF.parse(time);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            time = _12HourSDF.format(_24HourDt);
+        }
+        Alarm a = new Alarm(true, time, Alarm.convertArrayToString(dates));
+        acf.addAlarm(a);
     }
 
     @Override
     public void onAlarmFragmentInteraction(Uri uri) {
 
-    }
-
-    public void showFragment(String tag){
-
-        FragmentManager fragmentManager = getSupportFragmentManager();
-
-        Fragment fragment = fragmentManager.findFragmentByTag(tag);
-
-        if (fragment == null) {
-            if (tag.equals(AlarmClockFragment.TAG)) {
-//                fragment = AlarmClockFragment.newInstance();
-            } else if (tag.equals(StopWatchFragment.TAG)){
-                fragment = StopWatchFragment.newInstance();
-            }
-        }
-
-        FragmentTransaction trans = fragmentManager.beginTransaction();
-
-        trans.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-
-        trans.replace(R.id.container, fragment, tag);
-
-        trans.addToBackStack(null);
-
-        trans.commit();
     }
 
     /**

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
+import android.view.View;
 
 import aitfinalproject.wakeup.R;
 
@@ -16,11 +17,12 @@ import aitfinalproject.wakeup.R;
 public class AddAlarmDialog extends DialogFragment{
 
     public interface NoticeDialogListener {
-        public void onAddAlarmPositiveClick(DialogFragment dialog);
+        public void onAddAlarmPositiveClick(View view);
     }
 
     // Use this instance of the interface to deliver action events
     NoticeDialogListener mListener;
+
 
     // Override the Fragment.onAttach() method to instantiate the NoticeDialogListener
     @Override
@@ -39,12 +41,12 @@ public class AddAlarmDialog extends DialogFragment{
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
-
-        builder.setView(inflater.inflate(R.layout.alarm_dialog, null))
+        final View v = inflater.inflate(R.layout.alarm_dialog, null);
+        builder.setView(v)
                 .setPositiveButton(R.string.add_alarm, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        mListener.onAddAlarmPositiveClick(AddAlarmDialog.this);
+                        mListener.onAddAlarmPositiveClick(v);
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
