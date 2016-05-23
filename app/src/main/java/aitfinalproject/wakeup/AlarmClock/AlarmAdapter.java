@@ -11,6 +11,7 @@ import android.widget.ToggleButton;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Vector;
 
 import aitfinalproject.wakeup.Constants;
 import aitfinalproject.wakeup.R;
@@ -21,7 +22,7 @@ import aitfinalproject.wakeup.R;
     public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolder> {
 
     private Context mContext;
-    private AlarmList mAlarms = new AlarmList();
+    private List<Alarm> mAlarms = new Vector();
     public AlarmAdapter(Context context){
         mContext = context;
     }
@@ -80,10 +81,6 @@ import aitfinalproject.wakeup.R;
     public void onItemDismiss(int position) {
         mAlarms.remove(position).delete();
         notifyItemRemoved(position);
-    }
-
-    public AlarmList getAlarms(){
-        return mAlarms;
     }
 
     public void onItemMove(int fromPosition, int toPosition) {

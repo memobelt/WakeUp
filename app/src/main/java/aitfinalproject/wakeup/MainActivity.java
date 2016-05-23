@@ -268,6 +268,7 @@ public class MainActivity extends AppCompatActivity implements AddAlarmDialog.No
         intent.putExtra("ANS",e[1]);
         pi = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         am.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pi);
+        Toast.makeText(this, e[1], Toast.LENGTH_SHORT).show();
 
         Toast.makeText(MainActivity.this, "Alarm set at " +hour_string+":"+minute_string, Toast.LENGTH_SHORT).show();
     }
