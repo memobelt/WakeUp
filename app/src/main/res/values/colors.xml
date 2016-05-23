@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#e14f39</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#fdf850</color>
-    <color name="colorButton">#f5e084</color>
-    <color name="colorStart">#9dd96d</color>
-    <color name="colorReset">#e97f67</color>
+    <color name="colorPrimary">#f44336</color>
+    <color name="colorPrimaryDark">#c62828</color>
+    <color name="colorAccent">#2962ff</color>
+    <color name="colorButton">#ffe082</color>
+    <color name="colorStart">#9ccc65</color>
+    <color name="colorReset">#e57373</color>
+
+    <color name="black_overlay">#66000000</color>
 </resources>

@@ -16,6 +16,8 @@ import aitfinalproject.wakeup.AlarmClock.Alarm;
 import aitfinalproject.wakeup.AlarmClock.AlarmAdapter;
 import aitfinalproject.wakeup.AlarmClock.AlarmTouchHelper;
 import aitfinalproject.wakeup.R;
+import bsh.EvalError;
+import bsh.Interpreter;
 
 /*
 * Memo
@@ -56,7 +58,6 @@ public class AlarmClockFragment extends Fragment{
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         RecyclerView recycler_View = (RecyclerView) view.findViewById(R.id.recycler_view1);
-        assert recycler_View != null;
         recycler_View.setAdapter(mAlarmAdapter);
         recycler_View.setLayoutManager(llm);
 
@@ -64,27 +65,11 @@ public class AlarmClockFragment extends Fragment{
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(recycler_View);
 
-
-
-//        fabAddAlarm = (FloatingActionButton) view.findViewById(R.id.fabAddAlarm);
-//        fabAddAlarm.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                DialogFragment addAlarmDialog = new AddAlarmDialog();
-//                addAlarmDialog.show(getChildFragmentManager(), "addAlarm");
-//            }
-//        });
         return view;
     }
 
     public void addAlarm(Alarm alarm){
         mAlarmAdapter.addAlarm(alarm);
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putSerializable("Alarm", mAlarmAdapter.getAlarms());
-        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -102,6 +87,41 @@ public class AlarmClockFragment extends Fragment{
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    public String[] generateEquation(int diff) throws EvalError {
+        if(diff>0) {
+            int nums[] = new int[diff + 1];
+            for (int i = 0; i < diff + 1; i++) {
+                nums[i] = (int) ((Math.random() * (10 * diff)) + (Math.random() * 10));
+            }
+            StringBuilder equation = new StringBuilder("result = ");
+            for (int i = 0; i < diff; i++) {
+                int operator = (int) (Math.random() * 4);
+                switch (operator) {
+                    case 0:
+                        equation.append(nums[i]).append("+");
+                        break;
+                    case 1:
+                        equation.append(nums[i]).append("*");
+                        break;
+                    case 2:
+                        equation.append(nums[i]).append("/");
+                        break;
+                    case 3:
+                        equation.append(nums[i]).append("-");
+                        break;
+                }
+            }
+            equation.append(nums[diff]);
+            Interpreter interpreter = new Interpreter();
+            interpreter.eval(equation.toString());
+            String s = String.valueOf(interpreter.get("result"));
+            return new String[]{equation.toString(), s};
+        }
+        else {
+            return new String[]{"0","0"};
+        }
     }
 
     public interface OnAlarmFragmentInteractionListener {

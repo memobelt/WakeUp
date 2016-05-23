@@ -108,5 +108,16 @@
     <string name="friday">F</string>
     <string name="saturday">Sa</string>
     <string name="sunday">Su</string>
+    <string name="alarm_sound">Select Notification</string>
+    <string name="service">Service</string>
+
+    <string name="title_activity_stop_alarm">StopAlarm</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="difficulty_rating">Difficulty rating</string>
+    <string name="answer_here">Answer Here</string>
+    <string name="ans">Answer</string>
+    <string name="turn_off_alarm">Turn Off Alarm</string>
+    <string name="wrong">WRONG</string>
 
 </resources>
