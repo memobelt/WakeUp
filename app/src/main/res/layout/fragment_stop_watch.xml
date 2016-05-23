@@ -7,11 +7,7 @@
     android:paddingRight="10dp"
     android:paddingTop="10dp"
     android:paddingBottom="10dp"
-    tools:context="aitfinalproject.wakeup.Fragments.StopWatchFragment"
-   >
-
-    <!-- TODO: Update blank fragment layout -->
-    
+    tools:context="aitfinalproject.wakeup.Fragments.StopWatchFragment">
 
     <TextView
         android:id="@+id/tvStopWatch"
@@ -35,7 +31,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="25"
-           android:text="Reset"
+           android:text="@string/reset"
             android:background="@color/colorReset"
             />
 
@@ -50,8 +46,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="25"
-            android:textOff="Start"
-            android:textOn="Pause"
+            android:textOff="@string/start"
+            android:textOn="@string/pause"
             android:background="@color/colorStart"
            />
 
@@ -62,7 +58,7 @@
         android:id="@+id/btnLap"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Lap"
+        android:text="@string/lap"
         android:background="@color/colorButton"
         android:layout_marginBottom="10dp"/>
 

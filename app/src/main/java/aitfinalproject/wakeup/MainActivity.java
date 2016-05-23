@@ -73,7 +73,6 @@ public class MainActivity extends AppCompatActivity implements AddAlarmDialog.No
         if(getIntent().getBooleanExtra("FROM ALARM",false)==true){
             setContentView(R.layout.activity_stop_alarm);
             final TextView equation = (TextView) findViewById(R.id.equation);
-            Intent i = getIntent();
             equation.setText(getIntent().getStringExtra("EQ"));
             final Button btnAnsEq = (Button) findViewById(R.id.btnEqAns);
             final EditText ans = (EditText) findViewById(R.id.answer);
@@ -97,11 +96,6 @@ public class MainActivity extends AppCompatActivity implements AddAlarmDialog.No
             setOffAlarm.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
-//                    am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),pi);
-//                    Intent i = new Intent(getApplicationContext(), AlarmService.class);
-//                    i.addCategory(AlarmService.SERVICE);
-//                    stopService(i);
                     intent.putExtra("STATE", Constants.OFF);
                     sendBroadcast(intent);
                     am.cancel(pi);
@@ -318,11 +312,11 @@ public class MainActivity extends AppCompatActivity implements AddAlarmDialog.No
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "ALARM";
+                    return getString(R.string.alarm);
                 case 1:
-                    return "STOPWATCH";
+                    return getString(R.string.stopwatch);
                 case 2:
-                    return "TIMER";
+                    return getString(R.string.timer);
             }
             return null;
         }

@@ -40,8 +40,8 @@ public class AlarmService extends Service {
         PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent1, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Notification mNotify  = new Notification.Builder(this)
-                .setContentTitle("Alarm!")
-                .setContentText("Click me!")
+                .setContentTitle(getString(R.string.alarm_notify))
+                .setContentText(getString(R.string.click_me))
                 .setSmallIcon(R.drawable.ic_timer)
                 .setContentIntent(pIntent)
                 .setAutoCancel(true)

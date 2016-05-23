@@ -115,9 +115,21 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="difficulty_rating">Difficulty rating</string>
-    <string name="answer_here">Answer Here</string>
+    <string name="answer_here">Answer Here (Round Down)</string>
     <string name="ans">Answer</string>
     <string name="turn_off_alarm">Turn Off Alarm</string>
     <string name="wrong">WRONG</string>
+    <string name="alarm">ALARM</string>
+    <string name="stopwatch">STOPWATCH</string>
+    <string name="timer">TIMER</string>
+    <string name="alarm_notify">Alarm!</string>
+    <string name="click_me">Click me!</string>
+    <string name="reset">Reset</string>
+    <string name="start">Start</string>
+    <string name="pause">Pause</string>
+    <string name="lap">Lap</string>
+    <string name="hours">hours</string>
+    <string name="min">min</string>
+    <string name="resume">Resume</string>
 
 </resources>
